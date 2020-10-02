@@ -1,0 +1,47 @@
+"DemoEC2": {
+  "Type": "AWS::EC2::Instance",
+  "Properties": {
+    "KeyName": "Demokeypair",
+    "DisableApiTermination": "false",
+    "ImageId": "ami-08f3d892de259504d",
+    "InstanceType": "t2.micro",
+    "Monitoring": "false",
+    "SubnetId": "subnet-1406cb6c",
+    "SecurityGroupIds": {
+      "MyVPCSGpriv" : {
+        "Type" : "AWS::EC2::SecurityGroup",
+        "Properties" : {
+          "GroupDescription" : "This SG is for my Demo Private EC2 Instance",
+          "SecurityGroupIngress" : [{
+             "IpProtocol" : "tcp",
+             "FromPort" : 22,
+             "ToPort" : 22,
+             "CidrIp" : "0.0.0.0/0"
+          }],
+          "SecurityGroupEgress" : [{
+       "IpProtocol" : "tcp",
+       "FromPort" : 22,
+       "ToPort" : 22,
+       "CidrIp" : "0.0.0.0/0"
+    }],
+          "VpcId" : "vpc-e6f9899e",
+          "Tags" :  [{ "Key": "Name", "Value":  "MyVPCSGpriv" }]
+        }
+      },
+    "Tags": [{
+      "Key": "Name",
+      "Value": "DemoEC2"
+    }],
+    "UserData": {
+      "Fn::Base64": {
+        "Fn::Join": [
+          "",
+          [
+            "#!/bin/bash -ex",
+            "-"
+          ]
+        ]
+      }
+    }
+  }
+}
